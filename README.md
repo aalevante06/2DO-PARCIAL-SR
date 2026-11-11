@@ -2,7 +2,7 @@
 
 > **Laboratorio de seguridad en GNS3:** VPN IPsec site-to-site Cisco–FortiGate, DHCP, SSH, AAA/RADIUS (NPS), monitoreo Zabbix/SNMP y endurecimiento de dispositivos Cisco.
 
-**🎥 Video de demostración (máximo 10 minutos):** `ENLACE_DE_YOUTUBE_PENDIENTE`  
+**🎥 Video de demostración:** `ENLACE_DE_YOUTUBE:`(https://youtu.be/Sd0nDe1n9Yk)`  
 **Estudiante:** Luis Ariel Alevante Agramonte · **Matrícula:** `2025-2174` · **Fecha de pruebas:** 11 de noviembre de 2026
 
 ---
