@@ -1,0 +1,59 @@
+! Switch-2174 | extracto del running-config recibido | secretos omitidos
+hostname Switch-2174
+service timestamps debug datetime msec
+service timestamps log datetime msec
+logging buffered 16384 informational
+no ip source-route
+login on-failure log
+login on-success log
+no ip http server
+no ip http secure-server
+ip domain-name 2dopar.local
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+aaa new-model
+aaa group server radius GRUPO-NPS
+ server name NPS-2174
+aaa authentication login default local
+aaa authentication login RADIUS-2174 group GRUPO-NPS local
+aaa authorization exec default group GRUPO-NPS local
+radius server NPS-2174
+ address ipv4 10.21.74.10 auth-port 1812 acct-port 1813
+ ! RADIUS shared key intentionally omitted
+!
+interface GigabitEthernet0/0
+ switchport mode access
+interface GigabitEthernet0/1
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast edge
+interface GigabitEthernet0/2
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast edge
+interface GigabitEthernet0/3
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast edge
+interface GigabitEthernet1/3
+ switchport mode access
+interface Vlan1
+ ip address 10.21.74.2 255.255.255.0
+ip default-gateway 10.21.74.1
+!
+snmp-server location LAB-GNS3
+snmp-server contact ADMIN-2174
+! SNMP read-only community deliberately omitted
+!
+line vty 0 4
+ login authentication RADIUS-2174
+ transport input ssh
+! exec-timeout 10 0 verificado mediante show running-config all
+! Hashes y MAC sticky especificas omitidos por privacidad.

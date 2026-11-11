@@ -1,0 +1,21 @@
+ROUTER R1-2174
+terminal length 0
+show ip interface brief
+show ip dhcp binding
+show ip ssh
+show crypto isakmp sa
+ping 10.21.75.1 source 10.21.74.1 repeat 5
+show crypto ipsec sa
+show ip route 10.21.75.1
+show logging
+
+SWITCH Switch-2174
+show ip ssh
+show port-security
+show port-security interface gi0/3
+show running-config all | section line vty
+show logging
+
+GUI: Zabbix Hosts -> disponibilidad SNMP de R1-2174 y Switch-2174
+WINDOWS: Event Viewer -> Security -> eventos 6272 y 6273 NPS
+FORTIGATE GUI: VPN -> IPsec Tunnels -> VPN-CISCO-2174 estado UP

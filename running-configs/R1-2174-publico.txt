@@ -1,0 +1,59 @@
+! R1-2174 | extracto del running-config recibido | credenciales sustituidas
+hostname R1-2174
+service timestamps debug datetime msec
+service timestamps log datetime msec
+logging buffered 16384 informational
+no ip source-route
+no ip domain lookup
+ip domain name 2dopar.local
+login on-failure log
+login on-success log
+ip ssh version 2
+no ip http server
+no ip http secure-server
+!
+ip dhcp excluded-address 10.21.74.1 10.21.74.99
+ip dhcp excluded-address 10.21.74.201 10.21.74.254
+ip dhcp excluded-address 10.21.76.1
+ip dhcp pool LAN-2174
+ network 10.21.74.0 255.255.255.0
+ default-router 10.21.74.1
+ dns-server 10.21.74.10
+ip dhcp pool FORTIGATE-WAN
+ network 10.21.76.0 255.255.255.252
+ default-router 10.21.76.1
+!
+interface FastEthernet0/0
+ ip address 10.21.74.1 255.255.255.0
+interface FastEthernet1/0
+ description WAN-IPSEC-FORTIGATE
+ ip address 10.21.76.1 255.255.255.252
+ crypto map VPN-2174-MAP
+interface FastEthernet1/1
+ shutdown
+!
+crypto isakmp policy 10
+ authentication pre-share
+ group 14
+ lifetime 28800
+! VPN pre-shared key intentionally excluded
+crypto ipsec transform-set VPN-2174-SET esp-des esp-sha-hmac
+ mode tunnel
+crypto map VPN-2174-MAP 10 ipsec-isakmp
+ set peer 10.21.76.2
+ set transform-set VPN-2174-SET
+ set pfs group14
+ match address 117
+access-list 117 permit ip 10.21.74.0 0.0.0.255 10.21.75.0 0.0.0.255
+ip route 10.21.75.0 255.255.255.0 10.21.76.2
+!
+snmp-server location LAB-GNS3
+snmp-server contact ADMIN-2174
+! SNMP community redacted
+!
+line vty 0 4
+ login local
+ transport input ssh
+! exec-timeout 10 0 verificado en show running-config all
+! line aux: se recomendo reducir privilegios; no se presupone la aplicacion
+! Las contrasenas, hashes, usuarios secret y claves estan omitidos.
