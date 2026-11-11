@@ -104,8 +104,6 @@ La VPN `VPN-CISCO-2174` conecta los segmentos `10.21.74.0/24` y `10.21.75.0/24`,
 
 El asistente de FortiGate creó **dos políticas en ambos sentidos**, además de la ruta IPsec y una ruta blackhole de respaldo. Para conservar acceso desde el PC principal se añadió una ruta `/32` en FortiGate: `10.21.74.3/32` vía `10.21.76.1`, por `port1`. Cisco posee la ruta `10.21.75.0/24` hacia `10.21.76.2`.
 
-> **Limitación del laboratorio:** DES y SHA1, al igual que IKEv1, son algoritmos/protocolos heredados. Se utilizaron por las opciones de esta imagen de laboratorio y **no son adecuados para una VPN de producción**. Para entornos reales, utilizar IKEv2 y suites modernas (por ejemplo AES-GCM), sujeto a compatibilidad.
-
 ## 5. Validación y resultados
 
 | Prueba | Evidencia observada | Resultado |
@@ -130,6 +128,18 @@ El asistente de FortiGate creó **dos políticas en ambos sentidos**, además de
 ![Fase 1 FortiGate](evidencias/vpn/02-fortigate-phase1.png)
 
 ![Fase 2 FortiGate](evidencias/vpn/03-fortigate-phase2.png)
+
+### Prueba de interrupción y restauración de comunicación
+
+Se comprobó la comunicación entre Ubuntu remoto
+y el servidor Zabbix (10.21.74.100).
+
+Al deshabilitar la política de acceso asociada a
+la VPN, el ping presentó 100 % de pérdida.
+Al restaurar la política, volvió a funcionar
+con 0 % de pérdida.
+
+![Prueba de conectividad VPN](evidencias/vpn/07-ping-vpn-bloqueado-restaurado.png)
 
 **SSH y hardening**
 
